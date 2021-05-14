@@ -70,39 +70,6 @@ app.get("/articles/search_1" , getArticlesByAuthor )
 
 
 
-
-// ticket four createNewArticle
-
-const createNewArticle = (req , res , next )=> {
-  res.status(201);
-  const newArticle = { title : req.body.title , description: req.body.description , author:req.body.author , id : uuid()}
-
-  if(newArticle){
-  articles.push(newArticle) }
-  else {
-    res.json("please insert an Article")
-  }
-
-  res.json(newArticle)
-}
-
-
-
-
-app.post("/articles" , createNewArticle )
-
-
-
-
-
-
-
-
-
-
-
-
-
 // Tickt Three getAnArticleById
 
 const getAnArticleById = (req , res , next )=> {
@@ -120,6 +87,83 @@ const getAnArticleById = (req , res , next )=> {
 
 
 app.get("/articles/search_2" , getAnArticleById )
+
+
+
+
+// ticket four createNewArticle
+
+const createNewArticle = (req , res , next )=> {
+  res.status(201);
+  const newArticle = { title : req.body.title , description: req.body.description , author:req.body.author , id : uuid()}
+
+  if(newArticle){
+  articles.push(newArticle) }
+  else {
+    res.json("please insert an Article")
+  }
+
+  res.json(newArticle)
+}
+
+
+app.post("/articles" , createNewArticle )
+
+
+// Ticket five  updateAnArticleById
+
+const updateAnArticleById = (req, res , next ) => {
+  const id = req.params.id
+
+  let i 
+
+  const found = articles.find((elem , index ) => {
+    i = index
+
+    return elem.id == id ;
+  });
+
+
+  if (found) {
+    res.status(200);
+
+    // create a update article
+    const newArticle = { id : id ,  title : req.body.title , description: req.body.description , author:req.body.author }
+
+    // loop over the object and check if there is no updated information and keep it same origin
+    for (const key in newArticle ) {
+      if(newArticle[key] && newArticle[key] != "" && newArticle[key] != " " ){
+
+      } else {
+        newArticle[key] = found[key]
+      }
+    }
+
+    // update the article
+    articles[i] = newArticle
+    res.json(newArticle) ;
+
+  } else {
+    res.status(404);
+    res.json("articles not found");
+  }
+
+
+};
+
+
+app.put("/articles/:id" , updateAnArticleById )
+
+
+
+
+
+
+
+
+
+
+
 
 
 
