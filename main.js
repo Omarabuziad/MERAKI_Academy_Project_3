@@ -162,13 +162,14 @@ const deleteArticleById = (req, res , next ) => {
 
   let i 
 
+  // check for the matched article to delete it 
   const found = articles.find((elem , index ) => {
     i = index
 
     return elem.id == id ;
   });
 
-
+  
   if (found) {
     res.status(200);
     articles.splice(i,1)
@@ -199,13 +200,13 @@ const deleteArticlesByAuthor = (req, res , next ) => {
 
   const l = articles.length
 
-
+   
   articles.forEach((elem , index ) => {
     if(elem.author == author){
      articles.splice(index , 1 )}
   });
 
-
+  // make case if the author name is invalid 
   if(articles.length == l ){
     res.status(404)
     res.json("there is no matched author")
@@ -222,6 +223,9 @@ const deleteArticlesByAuthor = (req, res , next ) => {
 
 
 app.delete("/articles", deleteArticlesByAuthor)
+
+
+
 
 
 
