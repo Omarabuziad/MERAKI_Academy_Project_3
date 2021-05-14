@@ -45,20 +45,26 @@ app.get("/articles" ,getAllArticles )
 // Tickt Two getArticlesByAuthor
 
 const getArticlesByAuthor = (req , res , next )=> {
-  const id = req.query.id
+  const author = req.query.author
   res.status(200);
-  const found = articles.find( (elem , index)=>{
-    return elem.id == id
-  })
+  // create empty array based on author 
+  const authorArt = []
+  // loop the articles and check for matched
+  articles.forEach( (elem , index)=>{
+    if(elem.author == author){
+      authorArt.push(elem)
+    }})
 
-  res.json(found)
-
+    // check if there is matched author or no 
+    if(authorArt[0]){
+      res.json(authorArt)
+    } else {
+      res.json("no author matched")
+    }
 
 }
 
-
-
-app.get("/articles/search_2" , getArticlesByAuthor )
+app.get("/articles/search_1" , getArticlesByAuthor )
 
 
 
