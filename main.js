@@ -187,11 +187,41 @@ const deleteArticleById = (req, res , next ) => {
 };
 
 
-
 app.delete("/articles/:id", deleteArticleById )
 
 
 
+
+// Ticket seven  deleteArticlesByAuthor
+
+const deleteArticlesByAuthor = (req, res , next ) => {
+  const author = req.body.author
+
+  const l = articles.length
+
+
+  articles.forEach((elem , index ) => {
+    if(elem.author == author){
+     articles.splice(index , 1 )}
+  });
+
+
+  if(articles.length == l ){
+    res.status(404)
+    res.json("there is no matched author")
+  } else {
+    res.status(200);
+    res.json({
+      "success" : true ,
+      "message" : `Success delete all the articles for the author => ${author}`
+    })
+  }
+
+
+};
+
+
+app.delete("/articles", deleteArticlesByAuthor)
 
 
 
