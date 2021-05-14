@@ -91,7 +91,7 @@ app.get("/articles/search_2" , getAnArticleById )
 
 
 
-// ticket four createNewArticle
+// Ticket four createNewArticle
 
 const createNewArticle = (req , res , next )=> {
   res.status(201);
@@ -155,11 +155,40 @@ const updateAnArticleById = (req, res , next ) => {
 app.put("/articles/:id" , updateAnArticleById )
 
 
+// Ticket six  deleteArticleById
+
+const deleteArticleById = (req, res , next ) => {
+  const id = req.params.id
+
+  let i 
+
+  const found = articles.find((elem , index ) => {
+    i = index
+
+    return elem.id == id ;
+  });
+
+
+  if (found) {
+    res.status(200);
+    articles.splice(i,1)
+    res.json({
+      "success" : true ,
+      "message" : `Success Delete article with id => ${id}`
+    })
+
+
+  } else {
+    res.status(404);
+    res.json("article not found");
+  }
+
+
+};
 
 
 
-
-
+app.delete("/articles/:id", deleteArticleById )
 
 
 
