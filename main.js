@@ -1,6 +1,7 @@
 const express = require("express");
 const app = express();
 const port = 5000 ;
+const {uuid} = require("uuidv4")
 
 // a middleware that enables us to read the received JSON data
 app.use(express.json());
@@ -29,6 +30,7 @@ const articles = [
     author: 'Jouza',
     },
 ];
+
 
 // Tickt one : getAllArticles
 
@@ -68,6 +70,26 @@ app.get("/articles/search_1" , getArticlesByAuthor )
 
 
 
+
+// ticket four createNewArticle
+
+const createNewArticle = (req , res , next )=> {
+  res.status(201);
+  const newArticle = { title : req.body.title , description: req.body.description , author:req.body.author , id : uuid()}
+
+  if(newArticle){
+  articles.push(newArticle) }
+  else {
+    res.json("please insert an Article")
+  }
+
+  res.json(newArticle)
+}
+
+
+
+
+app.post("/articles" , createNewArticle )
 
 
 
