@@ -30,15 +30,68 @@ const articles = [
     },
 ];
 
+// Tickt one : getAllArticles
 
-app.get("/articles" , (req , res , next )=> {
-    res.status(200);
-    res.json(articles)
-})
+const getAllArticles = (req , res , next )=> {
+  res.status(200);
+  res.json(articles)
+}
+
+app.get("/articles" ,getAllArticles )
 
 
 
 
+// Tickt Two getArticlesByAuthor
+
+const getArticlesByAuthor = (req , res , next )=> {
+  const id = req.query.id
+  res.status(200);
+  const found = articles.find( (elem , index)=>{
+    return elem.id == id
+  })
+
+  res.json(found)
+
+
+}
+
+
+
+app.get("/articles/search_2" , getArticlesByAuthor )
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+// Tickt Three getAnArticleById
+
+const getAnArticleById = (req , res , next )=> {
+  const id = req.query.id
+  res.status(200);
+  const found = articles.find( (elem , index)=>{
+    return elem.id == id
+  })
+
+  res.json(found)
+
+
+}
+
+
+
+app.get("/articles/search_2" , getAnArticleById )
 
 
 
