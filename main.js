@@ -124,7 +124,7 @@ const updateAnArticleById = (req, res , next ) => {
   Article
   .findOneAndUpdate({_id:id} , req.body  , {new:true})
   .then((result1) => {
-    res.json(result1);
+    res.json(result1)
   })
   .catch((err) => {
     res.json(err);
@@ -172,12 +172,26 @@ const updateAnArticleById = (req, res , next ) => {
 app.put("/articles/:id" , updateAnArticleById )
 
 
-// Ticket six  deleteArticleById
+// Ticket six  deleteArticleById using mongoose
 
 const deleteArticleById = (req, res , next ) => {
   const id = req.params.id
 
-  let i 
+  Article
+  .deleteOne({_id:id} )
+  .then((result1) => {
+    res.json({
+      "success" : true ,
+      "message" : `Success Delete article with id => ${id}`
+    })
+  })
+  .catch((err) => {
+    res.json(err);
+    res.status(404);
+    res.json("article not found");
+  });
+
+  /*let i 
 
   // check for the matched article to delete it 
   const found = articles.find((elem , index ) => {
@@ -199,7 +213,9 @@ const deleteArticleById = (req, res , next ) => {
   } else {
     res.status(404);
     res.json("article not found");
-  }
+  }*/
+
+
 
 
 };
@@ -212,10 +228,16 @@ app.delete("/articles/:id", deleteArticleById )
 
 // Ticket seven  deleteArticlesByAuthor
 
-const deleteArticlesByAuthor = (req, res , next ) => {
+const deleteArticlesByAuthor = async (req, res , next ) => {
   const author = req.body.author
 
-  const l = articles.length
+  const user = await User.findOne({firstName:author}).then((result)=>{ return result }).catch((err)=>{res.send(err)})
+  Article.deleteOne({author:user._id}).then((result)=>{res.json({
+    "success" : true ,
+    "message" : `Success delete all the articles for the author => ${author}`
+  }) ; res.status(200);}).catch((err)=>{res.send(err)})
+
+  /*const l = articles.length
 
    
   articles.forEach((elem , index ) => {
@@ -233,7 +255,7 @@ const deleteArticlesByAuthor = (req, res , next ) => {
       "success" : true ,
       "message" : `Success delete all the articles for the author => ${author}`
     })
-  }
+  }*/
 
 
 };
