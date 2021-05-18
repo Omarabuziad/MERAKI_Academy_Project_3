@@ -38,7 +38,7 @@ app.use(express.json());
 
 const getAllArticles = (req , res , next )=> {
   res.status(200);
-  res.json(articles)
+ Article.find({}).then((result)=>{res.json(result)}).catch((err)=>{res.send(err)})
 }
 
 app.get("/articles" ,getAllArticles )
@@ -108,7 +108,6 @@ const createNewArticle = (req , res , next )=> {
 
   article.save().then((result)=>{res.json(result)}).catch((err)=>{res.send(err)})
 }
-
 
 app.post("/articles" , createNewArticle )
 
