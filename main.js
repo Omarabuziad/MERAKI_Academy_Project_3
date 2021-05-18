@@ -104,7 +104,35 @@ app.post("/articles" , createNewArticle )
 const updateAnArticleById = (req, res , next ) => {
   const id = req.params.id
 
-  let i 
+  /*const updatedArticle = { title : req.body.title , description: req.body.description , author:req.body.author }
+
+  for (const key in updatedArticle ) {
+    if(updatedArticle[key] && updatedArticle[key] != "" && updatedArticle[key] != " " ){
+
+    } else {
+      const keyUpdate = Article.find({_id:id}).populate("author" , "firstName -_id").exec().then((result)=>{return result}).catch((err)=>{res.send(err)})
+      newArticle[key] = keyUpdate[key]
+    }
+
+
+
+
+
+
+  }*/
+
+  Article
+  .findOneAndUpdate({_id:id} , req.body  , {new:true})
+  .then((result1) => {
+    res.json(result1);
+  })
+  .catch((err) => {
+    res.json(err);
+  });
+
+
+
+  /*let i 
 
   const found = articles.find((elem , index ) => {
     i = index
@@ -135,7 +163,7 @@ const updateAnArticleById = (req, res , next ) => {
   } else {
     res.status(404);
     res.json("articles not found");
-  }
+  }*/
 
 
 };
