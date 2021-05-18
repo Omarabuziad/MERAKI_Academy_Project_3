@@ -230,7 +230,29 @@ app.delete("/articles", deleteArticlesByAuthor)
 
 
 
+//Server Express Level 2 
 
+//Ticket One 
+
+const createNewAuthor = (req , res , next )=> {
+  res.status(201);
+
+  const {firstName, lastName , age , country , email ,password } = req.body ;
+
+  const user = new User ({
+    firstName ,
+   lastName,
+   age,
+   country,
+   email,
+   password,
+  })
+
+  user.save().then((result)=>{res.json(result)}).catch((err)=>{res.send(err)})
+
+}
+
+app.post("/users" , createNewAuthor )
 
 
 
