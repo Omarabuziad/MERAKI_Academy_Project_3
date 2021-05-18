@@ -20,7 +20,7 @@ const articles = new mongoose.Schema({
 
 const comments = new mongoose.Schema({
     comment: {type:String},
-    commenter: {type:mongoose.Schema.ObjectId}
+    commenter: {type:mongoose.Schema.ObjectId }
 });
 
 

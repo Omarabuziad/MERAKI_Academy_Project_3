@@ -1,6 +1,6 @@
 const express = require("express");
 const db = require("./db")
-const {User , Article} = require("./schema")
+const {User , Article , Comment} = require("./schema")
 const app = express();
 const port = 5000 ;
 const {uuid} = require("uuidv4")
@@ -316,7 +316,24 @@ app.post("/login" , login )
 
 
 
+const createNewComment = (req, res , next ) => {
+  const id = req.params.id
 
+
+  res.status(201);
+
+  const {comment, commenter} = req.body ;
+
+  const comment1 = new Comment ({
+    comment, 
+    commenter , 
+  })
+
+  comment1.save().then((result)=>{res.json(result)}).catch((err)=>{res.send(err)})
+}
+
+
+app.post("/articles/:id/comments" , createNewComment )
 
 
 
