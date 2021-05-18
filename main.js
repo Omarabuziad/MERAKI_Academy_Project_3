@@ -46,26 +46,15 @@ app.get("/articles" ,getAllArticles )
 
 
 
-// Tickt Two getArticlesByAuthor
+// Tickt Two getArticlesByAuthor using mongoose
 
-const getArticlesByAuthor = (req , res , next )=> {
-  const author = req.query.author
+const getArticlesByAuthor = async (req , res , next )=> {
+  const authorid = req.query.authorid
   res.status(200);
-  // create empty array based on author 
-  const authorArt = []
-  // loop the articles and check for matched
-  articles.forEach( (elem , index)=>{
-    if(elem.author == author){
-      authorArt.push(elem)
-    }})
+  Article.find({author:authorid}).then((result)=>{res.json(result)}).catch((err)=>{res.send(err)})
 
-    // check if there is matched author or no 
-    if(authorArt[0]){
-      res.json(authorArt)
-    } else {
-      res.json("no author matched")
-    }
-
+  /*const user = await User.findOne({firstName:author}).then((result)=>{ return result }).catch((err)=>{res.send(err)})
+  Article.find({author:user._id}).then((result)=>{res.json(result)}).catch((err)=>{res.send(err)})*/
 }
 
 app.get("/articles/search_1" , getArticlesByAuthor )
