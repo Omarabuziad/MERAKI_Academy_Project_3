@@ -49,28 +49,26 @@ app.get("/articles" ,getAllArticles )
 // Tickt Two getArticlesByAuthor using mongoose
 
 const getArticlesByAuthor = async (req , res , next )=> {
-  const authorid = req.query.authorid
-  res.status(200);
-  Article.find({author:authorid}).then((result)=>{res.json(result)}).catch((err)=>{res.send(err)})
-
-  /*const user = await User.findOne({firstName:author}).then((result)=>{ return result }).catch((err)=>{res.send(err)})
-  Article.find({author:user._id}).then((result)=>{res.json(result)}).catch((err)=>{res.send(err)})*/
+  const author = req.query.author
+  
+  //Article.find({author:authorid}).then((result)=>{res.json(result)}).catch((err)=>{res.send(err)})
+  const user = await User.findOne({firstName:author}).then((result)=>{ return result }).catch((err)=>{res.send(err)})
+  Article.find({author:user._id}).then((result)=>{res.json(result) ; res.status(200);}).catch((err)=>{res.send(err)})
 }
 
 app.get("/articles/search_1" , getArticlesByAuthor )
 
 
 
-// Tickt Three getAnArticleById
+// Tickt Three getAnArticleById using mongoose
 
 const getAnArticleById = (req , res , next )=> {
   const id = req.query.id
   res.status(200);
-  const found = articles.find( (elem , index)=>{
-    return elem.id == id
-  })
+  Article.find({_id:id}).populate("author" , "firstName -_id").exec().then((result)=>{res.json(result)}).catch((err)=>{res.send(err)})
 
-  res.json(found)
+  /*const user = await User.findOne({firstName:author}).then((result)=>{ return result }).catch((err)=>{res.send(err)})
+  Article.find({author:user._id}).then((result)=>{res.json(result)}).catch((err)=>{res.send(err)})*/
 
 
 }
