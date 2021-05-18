@@ -293,7 +293,24 @@ app.post("/users" , createNewAuthor )
 
 
 
+const login = async (req , res , next )=> {
+  const {email, passowrd } = req.body ;
+  let vEmail = await User.findOne({email}).then((result)=>{ return result }).catch((err)=>{res.send(err)})
+  let vPassowrd = await User.findOne({passowrd}).then((result)=>{ return result }).catch((err)=>{res.send(err)})
+  
 
+  if(vEmail&& vPassowrd ){
+    res.status(200);
+    res.json("Valid login credentials")
+  }else {
+    res.status(404);
+    res.json("Invalid login credentials")
+
+  }
+
+}
+  
+app.post("/login" , login )
 
 
 

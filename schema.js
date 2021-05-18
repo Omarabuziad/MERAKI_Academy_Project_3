@@ -1,7 +1,7 @@
 const mongoose = require("mongoose");
 
 // by initializing a new schema it is possible to create a document that would hold user information
-const user = new mongoose.Schema({
+const users = new mongoose.Schema({
     firstName: { type: String},
     lastName: { type: String },
   age: { type: Number },
@@ -13,13 +13,28 @@ const user = new mongoose.Schema({
 const articles = new mongoose.Schema({
     title: {type:String},
  description:{type:String},
- author: {type:mongoose.Schema.ObjectId,ref:"User"}
+ author: {type:mongoose.Schema.ObjectId,ref:"User"},
+ comments:[{type:mongoose.Schema.ObjectId}]
+
+});
+
+const comments = new mongoose.Schema({
+    comment: {type:String},
+    commenter: {type:mongoose.Schema.ObjectId}
 });
 
 
 //Create and export the mongoose modle 
-const User1 = mongoose.model("User", user);
+const User1 = mongoose.model("User", users);
 const Article1 = mongoose.model("Article",articles);
+const Comment1 = mongoose.model("Comment", comments);
 
 module.exports.User = User1;
 module.exports.Article = Article1;
+module.exports.Comment = Comment1;
+
+
+/*
+module.exports.User =  mongoose.model("User", users);
+module.exports.Article = mongoose.model("Article",articles);
+*/
