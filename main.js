@@ -9,7 +9,7 @@ const {uuid} = require("uuidv4")
 app.use(express.json());
 
 
-const articles = [
+/*const articles = [
     {
     id: 1,
     title: 'How I learn coding?',
@@ -31,7 +31,7 @@ const articles = [
     'Lorem, Quam, mollitia.',
     author: 'Jouza',
     },
-];
+];*/
 
 
 // Tickt one : getAllArticles
@@ -93,19 +93,20 @@ app.get("/articles/search_2" , getAnArticleById )
 
 
 
-// Ticket four createNewArticle
+// Ticket four createNewArticle using mongoose
 
 const createNewArticle = (req , res , next )=> {
   res.status(201);
-  const newArticle = { title : req.body.title , description: req.body.description , author:req.body.author , id : uuid()}
 
-  if(newArticle){
-  articles.push(newArticle) }
-  else {
-    res.json("please insert an Article")
-  }
+  const {title, description , author} = req.body ;
 
-  res.json(newArticle)
+  const article = new Article ({
+    title, 
+    description , 
+    author ,
+  })
+
+  article.save().then((result)=>{res.json(result)}).catch((err)=>{res.send(err)})
 }
 
 
