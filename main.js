@@ -317,10 +317,11 @@ app.post("/login" , login )
 
 
 const createNewComment = (req, res , next ) => {
+  //id of the article
   const id = req.params.id
 
 
-  res.status(201);
+  
 
   const {comment, commenter} = req.body ;
 
@@ -329,7 +330,7 @@ const createNewComment = (req, res , next ) => {
     commenter , 
   })
 
-  comment1.save().then((result)=>{res.json(result)}).catch((err)=>{res.send(err)})
+  comment1.save().then((result)=>{res.json(result) ; res.status(201); }).catch((err)=>{res.send(err)})
 }
 
 
