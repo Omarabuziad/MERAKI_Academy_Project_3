@@ -1,4 +1,5 @@
 const mongoose = require("mongoose");
+const bcrypt = require("bcrypt");
 
 // by initializing a new schema it is possible to create a document that would hold user information
 const users = new mongoose.Schema({
@@ -9,6 +10,15 @@ const users = new mongoose.Schema({
   email: { type: String },
   password:{type:String}
 });
+
+users.pre("save", async function () {
+  // `this` refers to the newly created user before saving
+  const salt = 10 ;
+  this.email = await this.email.toLowerCase();
+  const hashedPassword = await bcrypt.hash(this.password,salt);
+  this.password = hashedPassword
+})
+
 
 const articles = new mongoose.Schema({
     title: {type:String},
@@ -38,3 +48,6 @@ module.exports.Comment = Comment1;
 module.exports.User =  mongoose.model("User", users);
 module.exports.Article = mongoose.model("Article",articles);
 */
+
+// middleWare to make email lowercas and make password hash
+

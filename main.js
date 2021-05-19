@@ -1,12 +1,16 @@
 const express = require("express");
 const db = require("./db")
+const bcrypt = require("bcrypt");
 const {User , Article , Comment} = require("./schema")
+require("dotenv").config();
 const app = express();
 const port = 5000 ;
 const {uuid} = require("uuidv4")
 
 // a middleware that enables us to read the received JSON data
 app.use(express.json());
+
+
 
 
 /*const articles = [
@@ -271,6 +275,7 @@ app.delete("/articles", deleteArticlesByAuthor)
 
 //Ticket One 
 
+
 const createNewAuthor = (req , res , next )=> {
   res.status(201);
 
@@ -338,7 +343,27 @@ app.post("/articles/:id/comments" , createNewComment )
 
 
 
+const deleteuserById = (req, res , next ) => {
+  const id = req.params.id
 
+  User
+  .deleteOne({_id:id} )
+  .then((result1) => {
+    res.json({
+      "success" : true ,
+      "message" : `Success Delete article with id => ${id}`
+    })
+  })
+  .catch((err) => {
+    res.json(err);
+    res.status(404);
+    res.json("article not found");
+  });
+
+};
+
+
+app.delete("/users/:id", deleteuserById )
 
 
 
