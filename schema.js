@@ -15,8 +15,8 @@ users.pre("save", async function () {
   // `this` refers to the newly created user before saving
   const salt = 10 ;
   this.email = await this.email.toLowerCase();
-  const hashedPassword = await bcrypt.hash(this.password,salt);
-  this.password = hashedPassword
+  this.password = await bcrypt.hash(this.password,salt);
+  /*this.password = hashedPassword*/
 })
 
 

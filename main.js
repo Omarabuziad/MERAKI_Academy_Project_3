@@ -1,6 +1,7 @@
 const express = require("express");
 const db = require("./db")
 const bcrypt = require("bcrypt");
+const jwt = require("jsonwebtoken");
 const {User , Article , Comment} = require("./schema")
 require("dotenv").config();
 const app = express();
@@ -297,23 +298,52 @@ const createNewAuthor = (req , res , next )=> {
 app.post("/users" , createNewAuthor )
 
 
+// generating a new token
+const generateToken = (id , country , TOKEN_EXP_Time , SECRET) => {
+  // the payload that will be sent to the client-side
+  const payload = {
+    userId: id ,
+    country: country
+  };
+
+  const options = {
+    expiresIn: TOKEN_EXP_Time,
+  };
+  return jwt.sign(payload, SECRET, options);
+};
 
 const login = async (req , res , next )=> {
-  const {email, passowrd } = req.body ;
-  let vEmail = await User.findOne({email}).then((result)=>{ return result }).catch((err)=>{res.send(err)})
-  let vPassowrd = await User.findOne({passowrd}).then((result)=>{ return result }).catch((err)=>{res.send(err)})
-  
-
-  if(vEmail&& vPassowrd ){
-    res.status(200);
-    res.json("Valid login credentials")
-  }else {
+  /*const {email , passowrd } = req.body ;*/
+  let loginEmail = req.body.email
+  const loginPassword = req.body.password
+  loginEmail = loginEmail.toLowerCase()
+  const authEmail = await User.findOne({ email : loginEmail}).then((result)=>{return result})
+  if(authEmail){
+    const comarePass = await bcrypt.compare(loginPassword, authEmail.password)
+    if(comarePass){
+      const SECRET = process.env.SECRET;
+      const TOKEN_EXP_Time = process.env.TOKEN_EXP_Time;
+      const token = generateToken(authEmail._id  , authEmail.country , TOKEN_EXP_Time , SECRET )
+      res.json({token : token})
+    } else { 
+      res.status(403);
+      res.json({
+        message : "The password you’ve entered is incorrect",
+        status : 403
+      })
+    } } else {
     res.status(404);
-    res.json("Invalid login credentials")
-
+    res.json({
+      message : "The email doesn't exist" ,
+      status : 404
+    })
   }
 
+
 }
+  
+
+
   
 app.post("/login" , login )
 
