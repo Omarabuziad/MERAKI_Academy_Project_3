@@ -298,6 +298,9 @@ const createNewAuthor = (req , res , next )=> {
 app.post("/users" , createNewAuthor )
 
 
+const SECRET = process.env.SECRET;
+const TOKEN_EXP_Time = process.env.TOKEN_EXP_Time;
+
 // generating a new token
 const generateToken = (id , country , TOKEN_EXP_Time , SECRET) => {
   // the payload that will be sent to the client-side
@@ -312,6 +315,41 @@ const generateToken = (id , country , TOKEN_EXP_Time , SECRET) => {
   return jwt.sign(payload, SECRET, options);
 };
 
+
+const authentication = (req,res,next)=>{
+  const token = req.headers.authorization.split(" ")[1]
+
+  jwt.verify(token,SECRET,(err,result)=>{
+
+  if(err){
+    return res.json({
+      message : "The token is invalid or expired",
+      status : 403
+    })
+  }
+  // console.log(result);
+  if(result){
+    next()
+  }else{
+    res.json("not allowed")
+  }
+
+})
+}
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 const login = async (req , res , next )=> {
   /*const {email , passowrd } = req.body ;*/
   let loginEmail = req.body.email
@@ -321,8 +359,7 @@ const login = async (req , res , next )=> {
   if(authEmail){
     const comarePass = await bcrypt.compare(loginPassword, authEmail.password)
     if(comarePass){
-      const SECRET = process.env.SECRET;
-      const TOKEN_EXP_Time = process.env.TOKEN_EXP_Time;
+      
       const token = generateToken(authEmail._id  , authEmail.country , TOKEN_EXP_Time , SECRET )
       res.json({token : token})
     } else { 
@@ -339,7 +376,6 @@ const login = async (req , res , next )=> {
     })
   }
 
-
 }
   
 
@@ -354,12 +390,7 @@ app.post("/login" , login )
 const createNewComment = (req, res , next ) => {
   //id of the article
   const id = req.params.id
-
-
-  
-
   const {comment, commenter} = req.body ;
-
   const comment1 = new Comment ({
     comment, 
     commenter , 
@@ -369,7 +400,7 @@ const createNewComment = (req, res , next ) => {
 }
 
 
-app.post("/articles/:id/comments" , createNewComment )
+app.post("/articles/:id/comments" , authentication , createNewComment )
 
 
 
