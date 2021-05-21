@@ -13,7 +13,6 @@ app.use(express.json());
 
 
 
-
 /*const articles = [
     {
     id: 1,
@@ -77,8 +76,6 @@ const getAnArticleById = (req , res , next )=> {
 
 
 }
-
-
 
 app.get("/articles/search_2" , getAnArticleById )
 
@@ -280,7 +277,7 @@ app.delete("/articles", deleteArticlesByAuthor)
 const createNewAuthor = (req , res , next )=> {
   res.status(201);
 
-  const {firstName, lastName , age , country , email ,password } = req.body ;
+  const {firstName, lastName , age , country , email ,password} = req.body ;
 
   const user = new User ({
     firstName ,
@@ -306,7 +303,8 @@ const generateToken = (id , country , TOKEN_EXP_Time , SECRET) => {
   // the payload that will be sent to the client-side
   const payload = {
     userId: id ,
-    country: country
+    country: country ,
+    role: { role: 'admin', permissions: ['MANAGE_USERS', 'CREATE_COMMENTS'] }
   };
 
   const options = {
@@ -314,6 +312,9 @@ const generateToken = (id , country , TOKEN_EXP_Time , SECRET) => {
   };
   return jwt.sign(payload, SECRET, options);
 };
+
+
+
 
 
 const authentication = (req,res,next)=>{
@@ -329,6 +330,7 @@ const authentication = (req,res,next)=>{
   }
   // console.log(result);
   if(result){
+    req.token = result
     next()
   }else{
     res.json("not allowed")
@@ -336,6 +338,23 @@ const authentication = (req,res,next)=>{
 
 })
 }
+
+
+
+
+
+
+const authorization =(permission)=>{
+ return ( async (req,res,next)=>{
+   const found = await req.token.role.permissions.find(elem=> elem == permission)
+    if(found){
+      next()
+    }else {
+      res.json({ message: 'forbidden ', status: 403 })
+    }
+    
+})}
+
 
 
 
@@ -361,6 +380,8 @@ const login = async (req , res , next )=> {
     if(comarePass){
       
       const token = generateToken(authEmail._id  , authEmail.country , TOKEN_EXP_Time , SECRET )
+      req.token = token
+      console.log(req.token)
       res.json({token : token})
     } else { 
       res.status(403);
@@ -391,16 +412,39 @@ const createNewComment = (req, res , next ) => {
   //id of the article
   const id = req.params.id
   const {comment, commenter} = req.body ;
+
+  
+
+
+
+
   const comment1 = new Comment ({
     comment, 
     commenter , 
   })
 
-  comment1.save().then((result)=>{res.json(result) ; res.status(201); }).catch((err)=>{res.send(err)})
+  comment1.save().then((result)=>{res.json(result) ; res.status(201);
+
+    Article.findOneAndUpdate({_id:id} , {$push: {comments:result._id }} , {new:true})
+   .then((result1) => {
+    console.log(result1)
+   })
+   .catch((err) => {
+    res.json(err);
+   });
+
+  
+  
+  
+  
+  }).catch((err)=>{res.send(err)})
+
+  
+
 }
 
 
-app.post("/articles/:id/comments" , authentication , createNewComment )
+app.post("/articles/:id/comments" , authentication , authorization("CREATE_COMMENTS") ,createNewComment )
 
 
 
