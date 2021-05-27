@@ -1,0 +1,66 @@
+.app{
+    
+    border: 5px solid rgb(39, 97, 0);  
+}
+
+.navigator{
+    
+    border: 5px solid rgb(196, 8, 8); 
+    margin: 10px;
+    padding: 5px;
+    display: flex;
+    gap:15px;
+    align-items: center;
+}
+
+.register{
+    border: 5px solid rgb(31, 3, 158); 
+    margin: 10px;
+    padding: 5px;
+    display: flex;
+    flex-direction: column;
+    gap: 7px; 
+    display: relative;
+}
+
+.login{
+    border: 5px solid rgb(101, 2, 131); 
+    margin: 10px;
+    padding: 5px;
+    display: flex;
+    flex-direction: column;
+    gap: 7px; 
+    display: relative;
+}
+
+#reginp{
+    padding: 4px 4px ;
+    width: 300px;
+}
+
+#regss{
+ margin-bottom: 13px;
+ margin-top: 0px;
+}
+
+.LogRegButton{
+    background-color: #3a37e0;
+    padding: 12px 28px;
+    border-radius: 8px;
+    width: 317px;
+    color:white;
+    cursor: pointer;
+}
+
+#usercreated{
+    background-color: rgb(23, 202, 157);
+    width: 315px;
+    height: 75px;
+    
+}
+
+#h3reg{
+    padding: 4.5px;
+    margin-left: 8px;
+}
+
