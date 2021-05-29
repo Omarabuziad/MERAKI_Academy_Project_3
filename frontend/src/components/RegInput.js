@@ -9,7 +9,7 @@ const RegInput = ({type , placeholder,onChange,name}) => {
     }
     return (
         <>
-         <input name={name} onChange={onChange} placeholder={placeholder} type={type} id="reginp"></input>
+         <input name={name} onChange={onChange} placeholder={placeholder} type={type} className="reginp"></input>
         </>
     )
 }

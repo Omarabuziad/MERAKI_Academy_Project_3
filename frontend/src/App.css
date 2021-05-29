@@ -23,6 +23,15 @@
     display: relative;
 }
 
+.newarticle{
+    border: 5px solid rgb(235, 154, 4); 
+    margin: 10px;
+    padding: 5px;
+    display: flex;
+    flex-direction: column;
+    gap: 7px; 
+}
+
 .login{
     border: 5px solid rgb(101, 2, 131); 
     margin: 10px;
@@ -33,12 +42,24 @@
     display: relative;
 }
 
-#reginp{
+
+
+.Dashboard{
+    border: 5px solid rgb(4, 14, 155); 
+    margin: 10px;
+    padding: 5px;
+    display: flex;
+    flex-direction: column;
+    gap: 7px; 
+    display: relative;
+}
+
+.reginp{
     padding: 4px 4px ;
     width: 300px;
 }
 
-#regss{
+.regss{
  margin-bottom: 13px;
  margin-top: 0px;
 }
@@ -62,5 +83,19 @@
 #h3reg{
     padding: 4.5px;
     margin-left: 8px;
+}
+
+
+.userfail{
+    background-color: rgb(250, 138, 110);
+    width: 315px;
+    height: 75px;
+    
+}
+
+.h4reg{
+    padding: 1px;
+    margin-left: 8px;
+    color: rgb(153, 33, 4);
 }
 

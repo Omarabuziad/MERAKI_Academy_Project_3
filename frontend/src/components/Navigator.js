@@ -1,12 +1,14 @@
 import React from 'react'
-import Header from "./Header"
 import {BrowserRouter as Router , Route,Link}  from 'react-router-dom';
 
-const Navigator = () => {
+const Navigator = ({loginSucc}) => {
     return (
         <div className = "navigator">
-        <Link to="/login">Login</Link>
-        <Link to="/register">Register</Link>
+        {loginSucc?null:
+        <Link to="/login">Login</Link>}
+        {loginSucc?null:<Link to="/register">Register</Link>}
+        {loginSucc?<Link to="/dashboard">Dashboard</Link>:null}
+        {loginSucc?<Link to="/newarticle">New Artical</Link>:null}
     </div>
     )
 }
